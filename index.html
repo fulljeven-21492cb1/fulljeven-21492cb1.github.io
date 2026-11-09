@@ -1,0 +1,1395 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电影蜜蜂 - 电影资源聚合与深度解析</title>
+  <meta name="description" content="电影蜜蜂是一个汇聚全球电影资源、深度影评、榜单与观影指南的垂直门户。在这里，您可以发现新片速递、高分经典、导演专题、类型片单以及真实影迷讨论，适合电影爱好者与深度观影人群。">
+  <meta name="keywords" content="电影资源聚合, 高分电影推荐, 深度影评解析, 观影指南, 电影榜单">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f5b301'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23212121'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23f5b301'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --primary: #f5b301;
+      --primary-dark: #c48f00;
+      --bg: #f7f6f2;
+      --surface: #ffffff;
+      --surface-alt: #f0ede5;
+      --text: #1e1e1e;
+      --text-secondary: #5e5e5e;
+      --border: #d9d4c8;
+      --radius: 12px;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --font: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      --header-height: 64px;
+      --announce-height: 36px;
+      --sticky-offset: calc(var(--header-height) + var(--announce-height) + 8px);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: var(--sticky-offset); }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; object-fit: cover; }
+    ul { list-style: none; }
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    /* Sticky Group */
+    .sticky-group {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+    }
+    .announce-bar {
+      background: #1e1e1e;
+      color: #f5b301;
+      font-size: 13px;
+      padding: 8px 24px;
+      text-align: center;
+      letter-spacing: 0.3px;
+      border-bottom: 1px solid #333;
+    }
+    .announce-bar strong { font-weight: 600; }
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--text);
+      letter-spacing: 0.5px;
+    }
+    .brand svg { flex-shrink: 0; }
+    .main-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .main-nav a {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
+      background: var(--surface-alt);
+      color: var(--text);
+      outline: none;
+    }
+    .main-nav a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--surface-alt);
+      border-radius: 24px;
+      padding: 4px 4px 4px 16px;
+      border: 1px solid transparent;
+      transition: border 0.2s;
+    }
+    .search-box:focus-within { border-color: var(--primary); }
+    .search-box input {
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-family: inherit;
+      width: 180px;
+      outline: none;
+      color: var(--text);
+    }
+    .search-box button {
+      background: var(--primary);
+      border: none;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e1e1e;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-box button:hover { background: var(--primary-dark); }
+    .search-box button:focus-visible { outline: 2px solid #1e1e1e; outline-offset: 2px; }
+    .search-feedback {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 8px 0;
+      display: none;
+    }
+    .search-feedback.visible { display: block; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+      color: #fff;
+      padding: 56px 0 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-content h1 {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      color: #f5b301;
+    }
+    .hero-content p {
+      font-size: 16px;
+      color: #cfcfcf;
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--primary);
+      color: #1e1e1e;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: inline-block;
+      text-align: center;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-primary:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 15px;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-block;
+      text-align: center;
+    }
+    .btn-outline:hover { border-color: #f5b301; color: #f5b301; }
+    .btn-outline:focus-visible { outline: 2px solid #f5b301; outline-offset: 2px; }
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hero-visual svg {
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+    }
+
+    /* Main Layout */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 180px 1fr 260px;
+      gap: 32px;
+      padding: 40px 0 56px;
+    }
+    .channel-sidebar {
+      position: sticky;
+      top: calc(var(--header-height) + var(--announce-height) + 16px);
+      align-self: start;
+    }
+    .channel-sidebar h3 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .channel-list { display: flex; flex-direction: column; gap: 2px; }
+    .channel-list a {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+      display: block;
+    }
+    .channel-list a:hover,
+    .channel-list a:focus-visible {
+      background: var(--surface-alt);
+      color: var(--text);
+      outline: none;
+    }
+    .channel-list a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .main-content { min-width: 0; }
+    .right-sidebar {
+      position: sticky;
+      top: calc(var(--header-height) + var(--announce-height) + 16px);
+      align-self: start;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .sidebar-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .sidebar-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary);
+      display: inline-block;
+    }
+    .hot-list { display: flex; flex-direction: column; gap: 12px; }
+    .hot-item { display: flex; gap: 10px; align-items: flex-start; }
+    .hot-index {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--primary);
+      width: 22px;
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+    .hot-item:nth-child(n+4) .hot-index { color: var(--text-secondary); }
+    .hot-info { flex: 1; min-width: 0; }
+    .hot-title { font-size: 14px; font-weight: 600; line-height: 1.4; }
+    .hot-meta { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .update-stream { display: flex; flex-direction: column; gap: 10px; }
+    .update-item { font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+    .update-item strong { color: var(--text); font-weight: 600; }
+    .update-time { font-size: 11px; color: #999; margin-top: 1px; }
+
+    /* Section Base */
+    .section { margin-bottom: 48px; }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .section-header .sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .card-img { width: 100%; aspect-ratio: 4/3; background: var(--surface-alt); }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .card-title { font-size: 16px; font-weight: 700; line-height: 1.3; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 11px;
+      background: var(--surface-alt);
+      padding: 3px 8px;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .tag.primary { background: #fef3d0; color: #8a6d00; }
+    .card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; flex: 1; }
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-secondary);
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* List layout */
+    .list-compact { display: flex; flex-direction: column; gap: 2px; }
+    .list-item {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .list-item:last-child { border-bottom: none; }
+    .list-item .title { font-weight: 600; flex-shrink: 0; }
+    .list-item .desc { color: var(--text-secondary); font-size: 13px; }
+    .list-item .time { margin-left: auto; font-size: 12px; color: #999; white-space: nowrap; }
+
+    /* Category Grid */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .category-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .category-chip:hover,
+    .category-chip:focus-visible {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #1e1e1e;
+      outline: none;
+    }
+    .category-chip:focus-visible { outline: 2px solid #1e1e1e; outline-offset: 2px; }
+    .category-chip span { font-size: 11px; font-weight: 400; color: var(--text-secondary); }
+    .category-chip:hover span { color: #1e1e1e; }
+
+    /* Deep Dive */
+    .deep-dive {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+    .deep-dive h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 24px 0 10px;
+      padding-left: 12px;
+      border-left: 4px solid var(--primary);
+    }
+    .deep-dive h3:first-of-type { margin-top: 0; }
+    .deep-dive p { margin-bottom: 12px; color: var(--text-secondary); font-size: 14px; line-height: 1.8; }
+    .deep-dive ul { padding-left: 20px; margin-bottom: 16px; list-style: disc; color: var(--text-secondary); font-size: 14px; }
+    .deep-dive ul li { margin-bottom: 6px; }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 8px; }
+    details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    summary {
+      padding: 14px 18px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.15s;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: '+';
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+    details[open] summary::after { content: '−'; }
+    summary:hover { background: var(--surface-alt); }
+    summary:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+    details .faq-answer {
+      padding: 0 18px 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+
+    /* Reviews */
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .review-card {
+      background: var(--surface);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 16px;
+      font-size: 13px;
+    }
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .review-user { font-weight: 600; color: var(--text); }
+    .review-date { color: #999; }
+    .review-text { color: var(--text-secondary); line-height: 1.6; }
+    .review-item-ref { color: var(--primary-dark); font-weight: 500; }
+
+    /* News */
+    .news-list { display: flex; flex-direction: column; gap: 16px; }
+    .news-item {
+      display: flex;
+      gap: 16px;
+      background: var(--surface);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 16px;
+      align-items: flex-start;
+    }
+    .news-item img {
+      width: 120px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .news-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .news-content .news-date { font-size: 12px; color: #999; margin-bottom: 4px; }
+    .news-content p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* Related Tags */
+    .tag-index { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag-index a {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+    .tag-index a:hover,
+    .tag-index a:focus-visible {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #1e1e1e;
+      outline: none;
+    }
+    .tag-index a:focus-visible { outline: 2px solid #1e1e1e; outline-offset: 2px; }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      padding: 14px 0;
+      border-left: 2px solid var(--border);
+      padding-left: 20px;
+      position: relative;
+      margin-left: 8px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 20px;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+      border: 2px solid var(--surface);
+    }
+    .timeline-date { font-size: 13px; font-weight: 600; color: var(--primary-dark); min-width: 80px; }
+    .timeline-text { font-size: 14px; color: var(--text-secondary); }
+
+    /* Footer */
+    .site-footer {
+      background: #1e1e1e;
+      color: #b0b0b0;
+      padding: 48px 0 24px;
+      font-size: 14px;
+    }
+    .footer-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 2fr;
+      gap: 32px;
+    }
+    .footer-brand { font-size: 20px; font-weight: 700; color: #f5b301; margin-bottom: 12px; }
+    .footer-desc { font-size: 13px; line-height: 1.7; color: #999; }
+    .footer-col h4 { color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600; }
+    .footer-col a { display: block; font-size: 13px; color: #999; padding: 3px 0; transition: color 0.15s; }
+    .footer-col a:hover { color: #f5b301; }
+    .footer-col a:focus-visible { outline: 2px solid #f5b301; outline-offset: 2px; }
+    .footer-bottom {
+      max-width: 1360px;
+      margin: 32px auto 0;
+      padding: 20px 24px 0;
+      border-top: 1px solid #333;
+      font-size: 12px;
+      color: #666;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .main-layout { grid-template-columns: 160px 1fr; }
+      .right-sidebar { display: none; }
+    }
+    @media (max-width: 900px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .channel-sidebar { position: static; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+      .channel-sidebar h3 { width: 100%; margin-bottom: 4px; }
+      .channel-list { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+      .channel-list a { padding: 6px 12px; background: var(--surface); border: 1px solid var(--border); }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 740px) {
+      .container { padding: 0 16px; }
+      .header-inner { padding: 0 16px; }
+      .main-nav { display: none; }
+      .hero-content h1 { font-size: 32px; }
+      .card-grid { grid-template-columns: 1fr 1fr; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); }
+      .review-grid { grid-template-columns: 1fr; }
+      .news-item { flex-direction: column; }
+      .news-item img { width: 100%; height: 160px; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .deep-dive { padding: 20px; }
+      .search-box input { width: 120px; }
+    }
+    @media (max-width: 480px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .hero-content h1 { font-size: 28px; }
+      .list-item { flex-wrap: wrap; }
+      .list-item .time { margin-left: 0; width: 100%; }
+    }
+  </style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<!-- Sticky Announcement + Header -->
+<div class="sticky-group">
+  <div class="announce-bar">
+    <strong>本周新增 12 部 4K 修复经典</strong> · 《悲情城市》4K 版上线 · 11 月 7 日更新
+  </div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="brand" aria-label="电影蜜蜂首页">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect width="28" height="28" rx="8" fill="#f5b301"/>
+          <circle cx="14" cy="14" r="6" fill="#1e1e1e"/>
+          <circle cx="14" cy="14" r="2.5" fill="#f5b301"/>
+          <path d="M6 8 L3 4 M22 8 L25 4" stroke="#f5b301" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        电影蜜蜂
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="/#overview">领域概览</a>
+        <a href="/#featured">精选推荐</a>
+        <a href="/#updates">最新更新</a>
+        <a href="/#categories">分类入口</a>
+        <a href="/#deep-dive">深度解析</a>
+        <a href="/#guide">观影指南</a>
+        <a href="/#faq">常见问题</a>
+      </nav>
+      <div class="header-actions">
+        <form class="search-box" id="searchForm" role="search">
+          <input type="search" id="searchInput" placeholder="搜索电影、导演、类型…" aria-label="搜索电影内容">
+          <button type="submit">搜索</button>
+        </form>
+      </div>
+    </div>
+  </header>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <h1>电影蜜蜂</h1>
+      <p>汇聚全球电影资源、深度影评与观影指南。从院线新片到修复经典，从导演专题到类型片单，为电影爱好者提供可检索、可对比的内容聚合。</p>
+      <div class="hero-actions">
+        <a href="/#featured" class="btn-primary">浏览精选</a>
+        <a href="/#deep-dive" class="btn-outline">深度解析</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="电影胶片与蜜蜂图形组合">
+        <rect x="40" y="60" width="320" height="200" rx="16" fill="#2d2d2d" stroke="#f5b301" stroke-width="2"/>
+        <rect x="60" y="80" width="280" height="160" rx="8" fill="#1e1e1e"/>
+        <circle cx="200" cy="160" r="40" fill="#f5b301" opacity="0.15"/>
+        <circle cx="200" cy="160" r="24" fill="#f5b301"/>
+        <circle cx="200" cy="160" r="10" fill="#1e1e1e"/>
+        <rect x="70" y="90" width="40" height="140" rx="4" fill="#3a3a3a"/>
+        <rect x="290" y="90" width="40" height="140" rx="4" fill="#3a3a3a"/>
+        <circle cx="90" cy="110" r="6" fill="#f5b301" opacity="0.4"/>
+        <circle cx="90" cy="140" r="6" fill="#f5b301" opacity="0.4"/>
+        <circle cx="90" cy="170" r="6" fill="#f5b301" opacity="0.4"/>
+        <circle cx="90" cy="200" r="6" fill="#f5b301" opacity="0.4"/>
+        <circle cx="310" cy="110" r="6" fill="#f5b301" opacity="0.4"/>
+        <circle cx="310" cy="140" r="6" fill="#f5b301" opacity="0.4"/>
+        <circle cx="310" cy="170" r="6" fill="#f5b301" opacity="0.4"/>
+        <circle cx="310" cy="200" r="6" fill="#f5b301" opacity="0.4"/>
+        <path d="M340 40 L365 15 M360 50 L385 25" stroke="#f5b301" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+        <path d="M40 280 L80 250 M50 290 L90 260" stroke="#f5b301" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Main Layout -->
+<div class="container main-layout">
+  <!-- Left Channel Sidebar -->
+  <aside class="channel-sidebar" aria-label="频道索引">
+    <h3>频道索引</h3>
+    <ul class="channel-list">
+      <li><a href="/#categories">剧情片</a></li>
+      <li><a href="/#categories">科幻片</a></li>
+      <li><a href="/#categories">悬疑片</a></li>
+      <li><a href="/#categories">动画电影</a></li>
+      <li><a href="/#categories">纪录片</a></li>
+      <li><a href="/#categories">经典修复</a></li>
+      <li><a href="/#categories">导演专题</a></li>
+      <li><a href="/#categories">影展片单</a></li>
+      <li><a href="/#timeline">影史时间线</a></li>
+      <li><a href="/#reviews">影迷评论</a></li>
+    </ul>
+  </aside>
+
+  <!-- Center Main Content -->
+  <main class="main-content">
+
+    <!-- Section 1: Overview -->
+    <section id="overview" class="section">
+      <div class="section-header">
+        <h2>电影领域概览</h2>
+        <span class="sub">2026 年 11 月 8 日更新</span>
+      </div>
+      <div style="background: var(--surface); border-radius: var(--radius); padding: 28px; border: 1px solid var(--border); box-shadow: var(--shadow);">
+        <p style="margin-bottom: 12px; font-size: 14px; line-height: 1.8; color: var(--text-secondary);">
+          电影作为一种综合艺术形式，涵盖剧情、科幻、悬疑、动画、纪录片等多元类型。当前值得关注的内容方向包括：亚洲作者导演的新作（如滨口龙介、是枝裕和的最新项目）、4K 修复经典的重映（《悲情城市》《牯岭街少年杀人事件》4K 版陆续上线）、流媒体平台出品的原创电影（Netflix、Apple TV+ 的颁奖季种子选手），以及各大影展的入围片单（威尼斯、戛纳、柏林、多伦多）。
+        </p>
+        <p style="margin-bottom: 12px; font-size: 14px; line-height: 1.8; color: var(--text-secondary);">
+          2026 年秋季档最受瞩目的作品包括：丹尼斯·维伦纽瓦的科幻新作《与拉玛相会》改编电影、赵婷执导的西部片《无依之地》后续项目、以及动画领域新海诚的新片《天气之子》之后的剧场版作品。经典修复方面，标准收藏（Criterion）在 11 月推出了黑泽明《七武士》的 4K UHD 版本，马丁·斯科塞斯的《好家伙》也迎来了 35 周年纪念修复版。
+        </p>
+        <p style="font-size: 14px; line-height: 1.8; color: var(--text-secondary);">
+          在类型片领域，恐怖片持续升温（A24 的《异教徒》续作、 Blumhouse 的原创恐怖项目），韩国电影在悬疑和犯罪类型上保持高产出（《分手的决心》之后的朴赞郁新作），日本动画电影则在中国市场持续发力（《铃芽之旅》之后的多部引进作品）。纪录片方面，音乐纪录片和真实犯罪题材仍然是流媒体平台的重点采购方向。
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 2: Featured -->
+    <section id="featured" class="section">
+      <div class="section-header">
+        <h2>精选内容推荐</h2>
+        <span class="sub">编辑精选 · 8 部</span>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <div class="card-img">
+            <img src="https://picsum.photos/seed/dianying-mifeng01/400/300" alt="与拉玛相会电影概念图" width="400" height="300" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">与拉玛相会</h3>
+            <div class="card-tags">
+              <span class="tag primary">科幻</span>
+              <span class="tag">维伦纽瓦</span>
+              <span class="tag">硬科幻</span>
+            </div>
+            <p class="card-desc">改编自阿瑟·克拉克经典小说，维伦纽瓦继《沙丘》后的太空史诗。聚焦人类与外星巨型飞船的首次接触，视觉风格延续极简未来主义。</p>
+            <div class="card-meta">
+              <span>热度 9.2 万</span>
+              <span>2026-11-05 上线</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-img">
+            <img src="https://picsum.photos/seed/dianying-mifeng02/400/300" alt="悲情城市4K修复版剧照" width="400" height="300" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">悲情城市 4K 修复版</h3>
+            <div class="card-tags">
+              <span class="tag primary">经典修复</span>
+              <span class="tag">侯孝贤</span>
+              <span class="tag">台湾电影</span>
+            </div>
+            <p class="card-desc">侯孝贤 1989 年威尼斯金狮奖作品，4K 数字修复版首次上线流媒体。梁朝伟饰演的聋哑摄影师林文清，在二二八事件背景下的家族史诗。</p>
+            <div class="card-meta">
+              <span>评分 9.3</span>
+              <span>2026-11-07 上线</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-img">
+            <img src="https://picsum.photos/seed/dianying-mifeng03/400/300" alt="异教徒续集电影海报" width="400" height="300" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">异教徒：圣殿</h3>
+            <div class="card-tags">
+              <span class="tag primary">恐怖</span>
+              <span class="tag">A24</span>
+              <span class="tag">民俗恐怖</span>
+            </div>
+            <p class="card-desc">A24 出品的《异教徒》独立续作，延续前作的北欧民俗恐怖氛围。故事发生在法罗群岛的封闭宗教社区，探讨信仰与暴力的边界。</p>
+            <div class="card-meta">
+              <span>热度 7.8 万</span>
+              <span>2026-10-31 上线</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-img">
+            <img src="https://picsum.photos/seed/dianying-mifeng04/400/300" alt="七武士4K修复版封面" width="400" height="300" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">七武士 4K UHD</h3>
+            <div class="card-tags">
+              <span class="tag primary">经典修复</span>
+              <span class="tag">黑泽明</span>
+              <span class="tag">日本电影</span>
+            </div>
+            <p class="card-desc">标准收藏发行的黑泽明 1954 年杰作 4K UHD 版本，附带全新修复音轨和斯科塞斯访谈。三小时二十分钟的完整版首次以 4K 规格呈现。</p>
+            <div class="card-meta">
+              <span>评分 9.7</span>
+              <span>2026-11-01 发行</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-img">
+            <img src="https://picsum.photos/seed/dianying-mifeng05/400/300" alt="新海诚新作动画场景" width="400" height="300" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">新海诚新作：星之声</h3>
+            <div class="card-tags">
+              <span class="tag primary">动画</span>
+              <span class="tag">新海诚</span>
+              <span class="tag">青春</span>
+            </div>
+            <p class="card-desc">新海诚在《铃芽之旅》后的全新剧场版，回归早期《星之声》的科幻青春路线。讲述跨星际通讯背景下的少年少女情感故事。</p>
+            <div class="card-meta">
+              <span>热度 8.5 万</span>
+              <span>2026-11-03 上线</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-img">
+            <img src="https://picsum.photos/seed/dianying-mifeng06/400/300" alt="分手的决心剧照" width="400" height="300" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">分手的决心</h3>
+            <div class="card-tags">
+              <span class="tag primary">悬疑</span>
+              <span class="tag">朴赞郁</span>
+              <span class="tag">汤唯</span>
+            </div>
+            <p class="card-desc">朴赞郁 2022 年戛纳最佳导演作品，汤唯与朴海日主演。刑警与嫌疑人的暧昧博弈，山与海的视觉隐喻，4K 修复版重新上线。</p>
+            <div class="card-meta">
+              <span>评分 8.9</span>
+              <span>2026-10-28 上线</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-img">
+            <img src="https://picsum.photos/seed/dianying-mifeng07/400/300" alt="好家伙35周年修复版海报" width="400" height="300" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">好家伙 35 周年修复版</h3>
+            <div class="card-tags">
+              <span class="tag primary">犯罪</span>
+              <span class="tag">斯科塞斯</span>
+              <span class="tag">黑帮</span>
+            </div>
+            <p class="card-desc">马丁·斯科塞斯 1990 年黑帮史诗的 35 周年 4K 修复版，罗伯特·德尼罗、乔·佩西、雷·利奥塔主演。新增斯科塞斯与影评人评论音轨。</p>
+            <div class="card-meta">
+              <span>评分 9.1</span>
+              <span>2026-10-25 发行</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-img">
+            <img src="https://picsum.photos/seed/dianying-mifeng08/400/300" alt="真实犯罪纪录片场景" width="400" height="300" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">失踪的证人</h3>
+            <div class="card-tags">
+              <span class="tag primary">纪录片</span>
+              <span class="tag">真实犯罪</span>
+              <span class="tag">Netflix</span>
+            </div>
+            <p class="card-desc">Netflix 出品的四集真实犯罪纪录片，追踪一桩 2004 年悬而未决的失踪案。通过警方档案和当事人访谈，呈现证据链的断裂与重构。</p>
+            <div class="card-meta">
+              <span>热度 6.2 万</span>
+              <span>2026-11-02 上线</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Section 3: Updates -->
+    <section id="updates" class="section">
+      <div class="section-header">
+        <h2>最新更新与动态</h2>
+        <span class="sub">2026 年 11 月 8 日</span>
+      </div>
+      <div class="list-compact" style="background: var(--surface); border-radius: var(--radius); padding: 8px 20px; border: 1px solid var(--border);">
+        <div class="list-item">
+          <span class="title">《悲情城市》4K 版</span>
+          <span class="desc">侯孝贤经典修复版上线流媒体，新增 45 分钟幕后花絮</span>
+          <span class="time">今天 09:30</span>
+        </div>
+        <div class="list-item">
+          <span class="title">《与拉玛相会》</span>
+          <span class="desc">维伦纽瓦新作发布第二支预告，确认引进中国内地</span>
+          <span class="time">昨天 21:10</span>
+        </div>
+        <div class="list-item">
+          <span class="title">《异教徒：圣殿》</span>
+          <span class="desc">A24 恐怖续作上线首周观看时长破 1200 万小时</span>
+          <span class="time">11 月 7 日</span>
+        </div>
+        <div class="list-item">
+          <span class="title">《七武士》4K UHD</span>
+          <span class="desc">标准收藏版本正式发货，首批附赠黑泽明分镜手稿复刻</span>
+          <span class="time">11 月 6 日</span>
+        </div>
+        <div class="list-item">
+          <span class="title">《星之声》新海诚</span>
+          <span class="desc">剧场版上映日期敲定 2027 年 3 月，首支特报公开</span>
+          <span class="time">11 月 5 日</span>
+        </div>
+        <div class="list-item">
+          <span class="title">《失踪的证人》</span>
+          <span class="desc">第 3 集上线，案件关键证人首次接受镜头采访</span>
+          <span class="time">11 月 4 日</span>
+        </div>
+        <div class="list-item">
+          <span class="title">《分手的决心》</span>
+          <span class="desc">4K 修复版重新上线，新增朴赞郁导演评论音轨</span>
+          <span class="time">11 月 3 日</span>
+        </div>
+        <div class="list-item">
+          <span class="title">《好家伙》35 周年</span>
+          <span class="desc">4K 修复版实体碟开启预售，限量礼盒含剧照画册</span>
+          <span class="time">11 月 2 日</span>
+        </div>
+        <div class="list-item">
+          <span class="title">威尼斯电影节</span>
+          <span class="desc">2026 年主竞赛片单公布，三部亚洲导演作品入围</span>
+          <span class="time">11 月 1 日</span>
+        </div>
+        <div class="list-item">
+          <span class="title">《牯岭街少年杀人事件》</span>
+          <span class="desc">4K 修复版确认 12 月上线，杨德昌影展同步启动</span>
+          <span class="time">10 月 30 日</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Categories -->
+    <section id="categories" class="section">
+      <div class="section-header">
+        <h2>分类入口</h2>
+        <span class="sub">按类型快速定位</span>
+      </div>
+      <div class="category-grid">
+        <a href="/#featured" class="category-chip">剧情片 <span>作者电影 · 社会写实</span></a>
+        <a href="/#featured" class="category-chip">科幻片 <span>硬科幻 · 太空歌剧</span></a>
+        <a href="/#featured" class="category-chip">悬疑片 <span>犯罪 · 心理惊悚</span></a>
+        <a href="/#featured" class="category-chip">动画电影 <span>日本动画 · 欧美动画</span></a>
+        <a href="/#featured" class="category-chip">纪录片 <span>真实犯罪 · 音乐传记</span></a>
+        <a href="/#featured" class="category-chip">经典修复 <span>4K 修复 · 影史杰作</span></a>
+        <a href="/#featured" class="category-chip">导演专题 <span>维伦纽瓦 · 朴赞郁</span></a>
+        <a href="/#featured" class="category-chip">影展片单 <span>威尼斯 · 戛纳 · 柏林</span></a>
+      </div>
+    </section>
+
+    <!-- Section 5: Deep Dive -->
+    <section id="deep-dive" class="section">
+      <div class="section-header">
+        <h2>深度解析</h2>
+        <span class="sub">类型差异与观看策略</span>
+      </div>
+      <div class="deep-dive">
+        <h3>科幻片的两种路径：硬科幻与太空歌剧</h3>
+        <p>科幻电影大致可分为两个方向：硬科幻强调科学逻辑的严谨性，如《与拉玛相会》对物理规则和太空工程的细致呈现；太空歌剧则更注重史诗叙事和角色情感，如《沙丘》系列。判断一部科幻片属于哪一类，可以看它对技术细节的处理方式——硬科幻会花时间解释原理，太空歌剧则把技术作为背景。</p>
+        <p>维伦纽瓦的作品介于两者之间：《降临》偏硬科幻，《沙丘》偏太空歌剧，而《与拉玛相会》原著本身是硬科幻的标杆，电影改编需要在科学严谨性和大众可看性之间找到平衡。对于初次接触硬科幻的观众，建议从《降临》开始，再进入《与拉玛相会》。</p>
+
+        <h3>悬疑片的评判维度：信息释放节奏</h3>
+        <p>悬疑片的核心不在于“谁是凶手”，而在于信息如何被释放。优秀的悬疑片会让观众在已知信息中不断重新评估角色动机。朴赞郁的《分手的决心》就是一个典型例子：观众从一开始就知道汤唯饰演的角色可能是凶手，但电影通过刑警视角的情感偏移，让真相变得不再重要。</p>
+        <ul>
+          <li><strong>信息不对称型：</strong>观众知道得比角色多，产生紧张感（希区柯克式）</li>
+          <li><strong>信息隐藏型：</strong>观众与角色同步发现线索，产生解谜感（《利刃出鞘》式）</li>
+          <li><strong>信息扭曲型：</strong>叙事本身不可靠，需要观众重新拼凑（《记忆碎片》式）</li>
+        </ul>
+
+        <h3>经典修复的观看选择：4K UHD 与流媒体版本</h3>
+        <p>经典修复版本的选择取决于观看设备和内容偏好。4K UHD 实体碟通常包含最高码率的画面和额外花絮，适合家庭影院用户；流媒体版本的 4K 修复则更便捷，但码率受网络限制。以《七武士》为例，标准收藏的 4K UHD 版提供了杜比视界和全新修复音轨，而流媒体版本的画面虽然也是 4K 扫描，但压缩率更高。</p>
+        <p>对于《悲情城市》这类华语经典，4K 修复的难点在于原始底片的保存状况。侯孝贤的固定长镜头和自然光摄影对修复精度要求极高，暗部细节和胶片颗粒的保留是判断修复质量的关键指标。建议优先选择有原始底片扫描来源的版本。</p>
+
+        <h3>动画电影的院线 vs 流媒体窗口期</h3>
+        <p>日本动画电影的引进窗口期通常为日本上映后 3—6 个月。以新海诚作品为例，《铃芽之旅》日本上映后约 5 个月在中国内地上映。流媒体上线则更晚，一般在院线窗口结束后 2—3 个月。对于《星之声》这类新作，如果希望第一时间观看，需要关注院线引进消息；如果偏好在家观看，则需要等待流媒体上线。</p>
+        <p>欧美动画电影（皮克斯、迪士尼）的窗口期近年缩短至 45—60 天，部分作品甚至院线同步上线 Disney+。但日本动画电影的窗口期相对稳定，这与其制作委员会的分销策略有关。</p>
+      </div>
+    </section>
+
+    <!-- Section 6: Guide -->
+    <section id="guide" class="section">
+      <div class="section-header">
+        <h2>观影指南</h2>
+        <span class="sub">从入门到进阶的观看顺序</span>
+      </div>
+      <div style="background: var(--surface); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow);">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+          <div>
+            <h3 style="font-size: 16px; margin-bottom: 10px; font-weight: 700;">第一步：确定观影目的</h3>
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px;">如果是为了放松，优先选择类型明确的商业片（科幻、动作、喜剧）；如果是为了艺术体验，选择作者导演作品（侯孝贤、是枝裕和、滨口龙介）；如果是研究电影史，从经典修复版本入手（黑泽明、斯科塞斯、杨德昌）。</p>
+            <h3 style="font-size: 16px; margin-bottom: 10px; font-weight: 700;">第二步：判断条目投入价值</h3>
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px;">看三个指标：导演过往作品的口碑一致性、修复版本的来源（原始底片扫描优于数字修复）、以及评论中是否提到具体的技术细节（摄影、剪辑、声音设计）。避免仅凭评分做判断。</p>
+          </div>
+          <div>
+            <h3 style="font-size: 16px; margin-bottom: 10px; font-weight: 700;">第三步：类似条目的比较方法</h3>
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px;">同一导演的作品按时间顺序观看有助于理解风格演变（如从《星之声》到《你的名字》到《铃芽之旅》）。同一类型的作品可以横向比较处理方式（如《分手的决心》与《消失的爱人》对婚姻悬疑的不同处理）。</p>
+            <h3 style="font-size: 16px; margin-bottom: 10px; font-weight: 700;">第四步：窗口期与观看方式</h3>
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.7;">院线窗口期内的电影优先选择影院观看（视觉和声音效果不可替代）；窗口期结束后等待 4K 修复版或流媒体上线；经典修复版优先选择 4K UHD 实体碟，其次选择流媒体 4K 版本。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: FAQ -->
+    <section id="faq" class="section">
+      <div class="section-header">
+        <h2>常见问题</h2>
+        <span class="sub">影迷高频疑问</span>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>《与拉玛相会》和《沙丘》在视觉风格上有什么区别？</summary>
+          <div class="faq-answer">《沙丘》的视觉基调是暖色沙丘和巨型飞行器，强调帝国史诗的厚重感；《与拉玛相会》则是冷色调太空场景，聚焦人类与未知物体的首次接触，视觉上更接近《降临》的极简主义。维伦纽瓦在两部作品中都使用了大量实景搭建和微缩模型，但《与拉玛相会》的太空站内部设计更偏向几何抽象。</div>
+        </details>
+        <details>
+          <summary>4K 修复版和普通高清版在画质上差别大吗？</summary>
+          <div class="faq-answer">差别取决于原始底片的保存状况和修复工艺。以《悲情城市》为例，4K 修复版在暗部细节和胶片颗粒的保留上明显优于之前的 2K 修复版，尤其是在夜景和室内场景中。但如果原始底片损坏严重，4K 修复的提升幅度会受限。建议优先选择标注“原始底片扫描”的版本。</div>
+        </details>
+        <details>
+          <summary>第一次接触朴赞郁的电影，从哪部开始看比较好？</summary>
+          <div class="faq-answer">推荐从《分手的决心》开始。它比《老男孩》和《小姐》更温和，悬疑线清晰，情感线克制，适合初次接触朴赞郁风格的观众。如果喜欢更强烈的类型片体验，可以接着看《老男孩》；如果偏好文学性更强的作品，看《小姐》。</div>
+        </details>
+        <details>
+          <summary>日本动画电影在中国内地的引进窗口期一般是多久？</summary>
+          <div class="faq-answer">通常为日本上映后 3—6 个月。以新海诚作品为例，《铃芽之旅》日本 2022 年 11 月上映，中国内地 2023 年 3 月上映，间隔约 4 个月。《星之声》如果保持类似节奏，预计 2027 年春季在日本上映后，中国内地可能在 2027 年夏季引进。</div>
+        </details>
+        <details>
+          <summary>真实犯罪纪录片和虚构犯罪片在观看体验上有什么不同？</summary>
+          <div class="faq-answer">真实犯罪纪录片依赖真实档案和当事人访谈，信息密度高但叙事节奏较慢，观众需要自己判断证据的可信度；虚构犯罪片则通过剧本控制信息释放节奏，情感冲击更强。如果喜欢分析和推理，纪录片更合适；如果追求沉浸感，虚构片更合适。</div>
+        </details>
+        <details>
+          <summary>《七武士》三个半小时的片长，第一次看需要注意什么？</summary>
+          <div class="faq-answer">建议分两次观看，中间在“五郎兵卫加入”段落暂停。前半部分介绍七位武士的招募过程，后半部分是村庄防卫战。注意黑泽明对天气的运用（雨、风、泥泞）和群像镜头的调度，这些是理解后期动作片导演（如乔治·米勒、张艺谋）视觉语言的关键。</div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Section 8: Reviews -->
+    <section id="reviews" class="section">
+      <div class="section-header">
+        <h2>影迷评论</h2>
+        <span class="sub">16 条真实影迷短评</span>
+      </div>
+      <div class="review-grid">
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@胶片旅人</span><span class="review-date">今天 10:15</span></div>
+          <p class="review-text">《悲情城市》4K 版终于出了，梁朝伟在火车站那段的长镜头修复后细节太丰富了，暗部能看到更多背景信息。<span class="review-item-ref">#悲情城市</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@维伦纽瓦的沙虫</span><span class="review-date">今天 09:42</span></div>
+          <p class="review-text">《与拉玛相会》预告片里那个圆柱体飞船的尺度感做得很好，希望正片不要变成纯特效堆砌。维伦纽瓦的实拍比例一向高，期待。<span class="review-item-ref">#与拉玛相会</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@午夜场常客</span><span class="review-date">昨天 22:30</span></div>
+          <p class="review-text">《异教徒：圣殿》比第一部更压抑，法罗群岛的风景拍得越美越瘆人。A24 在民俗恐怖这条路上已经形成自己的美学体系了。<span class="review-item-ref">#异教徒圣殿</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@黑泽明の猫</span><span class="review-date">昨天 20:18</span></div>
+          <p class="review-text">《七武士》4K UHD 到手了，画质确实比之前的蓝光版提升明显，雨战那段的颗粒感保留得很好，没有过度降噪。<span class="review-item-ref">#七武士</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@新海诚的云</span><span class="review-date">11 月 7 日</span></div>
+          <p class="review-text">《星之声》特报里那个跨星际通讯的设定，感觉像是回到了新海诚早期的科幻路线，比《铃芽之旅》更让我期待。<span class="review-item-ref">#星之声</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@汤唯的影迷</span><span class="review-date">11 月 7 日</span></div>
+          <p class="review-text">《分手的决心》4K 版重看，发现山与海的视觉对比比第一次看更明显。朴赞郁在色彩分级上做了很细的层次。<span class="review-item-ref">#分手的决心</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@黑帮片研究所</span><span class="review-date">11 月 6 日</span></div>
+          <p class="review-text">《好家伙》35 周年修复版新增的评论音轨里，斯科塞斯提到很多关于长镜头调度的细节，对电影学生来说很值。<span class="review-item-ref">#好家伙</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@真实犯罪观察员</span><span class="review-date">11 月 6 日</span></div>
+          <p class="review-text">《失踪的证人》第三集那个关键证人的采访，信息量很大，但剪辑上有点拖。整体还是值得追完的。<span class="review-item-ref">#失踪的证人</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@侯孝贤的固定镜头</span><span class="review-date">11 月 5 日</span></div>
+          <p class="review-text">《悲情城市》4K 版的花絮里有一段侯导谈梁朝伟不会台语的处理方式，很有意思。聋哑角色的设定反而是叙事上的优势。<span class="review-item-ref">#悲情城市</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@科幻迷阿杰</span><span class="review-date">11 月 5 日</span></div>
+          <p class="review-text">《与拉玛相会》原著里对拉玛内部的重力异常描写很硬核，不知道维伦纽瓦会怎么视觉化。希望不要简化成普通的太空冒险。<span class="review-item-ref">#与拉玛相会</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@恐怖片避雷针</span><span class="review-date">11 月 4 日</span></div>
+          <p class="review-text">《异教徒：圣殿》的宗教符号密度比第一部高很多，不熟悉北欧神话的话可能会漏掉一些细节。建议看之前先补一下背景。<span class="review-item-ref">#异教徒圣殿</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@标准收藏收藏家</span><span class="review-date">11 月 4 日</span></div>
+          <p class="review-text">《七武士》4K UHD 的包装设计延续了 CC 的一贯水准，分镜手稿复刻册页质量不错。就是价格有点高。<span class="review-item-ref">#七武士</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@动画电影资料馆</span><span class="review-date">11 月 3 日</span></div>
+          <p class="review-text">新海诚从《星之声》到现在的风格变化很明显，早期那种粗糙但真诚的科幻感现在很难得了。希望新作能找回一些。<span class="review-item-ref">#星之声</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@朴赞郁的对称构图</span><span class="review-date">11 月 3 日</span></div>
+          <p class="review-text">《分手的决心》里那场山间寺庙的戏，4K 修复后能看清更多背景细节，雨后的光线层次很丰富。<span class="review-item-ref">#分手的决心</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@纪录片日常</span><span class="review-date">11 月 2 日</span></div>
+          <p class="review-text">《失踪的证人》目前三集看下来，证据链的呈现比较克制，没有过度戏剧化。这点比很多同类纪录片做得好。<span class="review-item-ref">#失踪的证人</span></p>
+        </div>
+        <div class="review-card">
+          <div class="review-header"><span class="review-user">@威尼斯电影节观察</span><span class="review-date">11 月 1 日</span></div>
+          <p class="review-text">今年威尼斯主竞赛有三部亚洲导演作品入围，其中两部是修复版首映。经典修复在影展中的比重越来越高了。<span class="review-item-ref">#威尼斯电影节</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 9: News -->
+    <section id="news" class="section">
+      <div class="section-header">
+        <h2>相关资讯</h2>
+        <span class="sub">2026 年 10 月下旬 — 11 月上旬</span>
+      </div>
+      <div class="news-list">
+        <article class="news-item">
+          <img src="https://picsum.photos/seed/dianying-news01/600/400" alt="悲情城市4K修复版发布会现场" width="600" height="400" loading="lazy">
+          <div class="news-content">
+            <h4>《悲情城市》4K 修复版上线，侯孝贤影展同步启动</h4>
+            <div class="news-date">2026-11-07</div>
+            <p>修复版由原始底片 4K 扫描，意大利博洛尼亚修复实验室完成。同步启动的影展将展映侯孝贤全部剧情长片，包括《悲情城市》《戏梦人生》《好男好女》。</p>
+          </div>
+        </article>
+        <article class="news-item">
+          <img src="https://picsum.photos/seed/dianying-news02/600/400" alt="与拉玛相会电影发布会" width="600" height="400" loading="lazy">
+          <div class="news-content">
+            <h4>《与拉玛相会》确认引进中国内地，档期待定</h4>
+            <div class="news-date">2026-11-06</div>
+            <p>维伦纽瓦科幻新作已过审，据发行方消息有望在 2027 年第一季度上映。该片北美定档 2026 年 12 月 18 日，中国内地档期可能同步或延后一周。</p>
+          </div>
+        </article>
+        <article class="news-item">
+          <img src="https://picsum.photos/seed/dianying-news03/600/400" alt="新海诚星之声制作发布会" width="600" height="400" loading="lazy">
+          <div class="news-content">
+            <h4>新海诚《星之声》定档 2027 年 3 月，特报公开</h4>
+            <div class="news-date">2026-11-05</div>
+            <p>新作回归科幻青春路线，讲述跨星际通讯背景下的少年少女故事。制片方透露将采用部分手绘作画与 3DCG 结合的方式，音乐仍由 RADWIMPS 负责。</p>
+          </div>
+        </article>
+        <article class="news-item">
+          <img src="https://picsum.photos/seed/dianying-news04/600/400" alt="标准收藏七武士4K UHD包装" width="600" height="400" loading="lazy">
+          <div class="news-content">
+            <h4>标准收藏《七武士》4K UHD 正式发货，首批附赠分镜手稿</h4>
+            <div class="news-date">2026-11-03</div>
+            <p>CC 编号 2 的《七武士》迎来 4K UHD 升级，正片来自 2025 年完成的 4K 修复。首批版本附赠黑泽明分镜手稿复刻册，共 48 页。</p>
+          </div>
+        </article>
+        <article class="news-item">
+          <img src="https://picsum.photos/seed/dianying-news05/600/400" alt="威尼斯电影节主竞赛片单发布会" width="600" height="400" loading="lazy">
+          <div class="news-content">
+            <h4>2026 年威尼斯电影节主竞赛片单公布，三部亚洲作品入围</h4>
+            <div class="news-date">2026-11-01</div>
+            <p>入围作品包括滨口龙介新片、是枝裕和首部韩语电影，以及一部修复版经典。华语电影方面暂无主竞赛入围，但有两部作品进入地平线单元。</p>
+          </div>
+        </article>
+        <article class="news-item">
+          <img src="https://picsum.photos/seed/dianying-news06/600/400" alt="牯岭街少年杀人事件4K修复工作照" width="600" height="400" loading="lazy">
+          <div class="news-content">
+            <h4>《牯岭街少年杀人事件》4K 修复版确认 12 月上线</h4>
+            <div class="news-date">2026-10-30</div>
+            <p>杨德昌 1991 年作品，4K 修复由原始底片扫描完成。修复版将首次以完整版（237 分钟）上线流媒体，此前流媒体版本多为 185 分钟剪辑版。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Section 10: Related Tags -->
+    <section id="related" class="section">
+      <div class="section-header">
+        <h2>相关推荐</h2>
+        <span class="sub">延伸方向与具体条目</span>
+      </div>
+      <div class="tag-index">
+        <a href="/#featured">滨口龙介《驾驶我的车》</a>
+        <a href="/#featured">是枝裕和《怪物》</a>
+        <a href="/#featured">维伦纽瓦《降临》</a>
+        <a href="/#featured">杨德昌《一一》4K</a>
+        <a href="/#featured">A24 恐怖片单</a>
+        <a href="/#featured">朴赞郁复仇三部曲</a>
+        <a href="/#featured">新海诚早期短片</a>
+        <a href="/#featured">标准收藏 4K 修复片单</a>
+      </div>
+    </section>
+
+    <!-- Section 11: Timeline -->
+    <section id="timeline" class="section">
+      <div class="section-header">
+        <h2>影史时间线</h2>
+        <span class="sub">经典修复杂志 · 2026 年</span>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="timeline-date">2026-11-07</span>
+          <span class="timeline-text">《悲情城市》4K 修复版上线流媒体</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">2026-11-01</span>
+          <span class="timeline-text">《七武士》4K UHD 标准收藏版发行</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">2026-10-25</span>
+          <span class="timeline-text">《好家伙》35 周年 4K 修复版发行</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">2026-10-20</span>
+          <span class="timeline-text">《牯岭街少年杀人事件》4K 修复版定档 12 月</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">2026-10-15</span>
+          <span class="timeline-text">《分手的决心》4K 修复版重新上线</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Right Sidebar -->
+  <aside class="right-sidebar" aria-label="辅助信息">
+    <div class="sidebar-card">
+      <h3>热门榜单</h3>
+      <div class="hot-list">
+        <div class="hot-item">
+          <span class="hot-index">1</span>
+          <div class="hot-info">
+            <div class="hot-title">与拉玛相会</div>
+            <div class="hot-meta">科幻 · 热度 9.2 万</div>
+          </div>
+        </div>
+        <div class="hot-item">
+          <span class="hot-index">2</span>
+          <div class="hot-info">
+            <div class="hot-title">悲情城市 4K</div>
+            <div class="hot-meta">经典修复 · 评分 9.3</div>
+          </div>
+        </div>
+        <div class="hot-item">
+          <span class="hot-index">3</span>
+          <div class="hot-info">
+            <div class="hot-title">异教徒：圣殿</div>
+            <div class="hot-meta">恐怖 · 热度 7.8 万</div>
+          </div>
+        </div>
+        <div class="hot-item">
+          <span class="hot-index">4</span>
+          <div class="hot-info">
+            <div class="hot-title">星之声（新海诚）</div>
+            <div class="hot-meta">动画 · 热度 8.5 万</div>
+          </div>
+        </div>
+        <div class="hot-item">
+          <span class="hot-index">5</span>
+          <div class="hot-info">
+            <div class="hot-title">七武士 4K UHD</div>
+            <div class="hot-meta">经典修复 · 评分 9.7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>更新流</h3>
+      <div class="update-stream">
+        <div class="update-item">
+          <strong>《悲情城市》4K</strong> 新增幕后花絮
+          <div class="update-time">今天 09:30</div>
+        </div>
+        <div class="update-item">
+          <strong>《与拉玛相会》</strong> 第二支预告
+          <div class="update-time">昨天 21:10</div>
+        </div>
+        <div class="update-item">
+          <strong>《失踪的证人》</strong> 第 3 集上线
+          <div class="update-time">11 月 4 日</div>
+        </div>
+        <div class="update-item">
+          <strong>《分手的决心》</strong> 4K 修复版
+          <div class="update-time">11 月 3 日</div>
+        </div>
+        <div class="update-item">
+          <strong>《好家伙》35 周年</strong> 实体碟预售
+          <div class="update-time">11 月 2 日</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">电影蜜蜂</div>
+      <p class="footer-desc">汇聚全球电影资源、深度影评与观影指南。从院线新片到修复经典，从导演专题到类型片单，为电影爱好者提供可检索、可对比的内容聚合。</p>
+    </div>
+    <div class="footer-col">
+      <h4>内容</h4>
+      <a href="/#overview">领域概览</a>
+      <a href="/#featured">精选推荐</a>
+      <a href="/#updates">最新更新</a>
+      <a href="/#deep-dive">深度解析</a>
+    </div>
+    <div class="footer-col">
+      <h4>分类</h4>
+      <a href="/#categories">剧情片</a>
+      <a href="/#categories">科幻片</a>
+      <a href="/#categories">悬疑片</a>
+      <a href="/#categories">经典修复</a>
+    </div>
+    <div class="footer-col">
+      <h4>关于</h4>
+      <a href="/#faq">常见问题</a>
+      <a href="/#reviews">影迷评论</a>
+      <a href="/#timeline">影史时间线</a>
+      <a href="/#news">相关资讯</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 电影蜜蜂 · 内容聚合示例页面</span>
+    <span>部分内容为示例数据，仅用于展示页面结构</span>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    var form = document.getElementById('searchForm');
+    var input = document.getElementById('searchInput');
+    var feedback = document.createElement('div');
+    feedback.className = 'search-feedback';
+    feedback.setAttribute('role', 'status');
+    form.parentNode.insertBefore(feedback, form.nextSibling);
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var q = input.value.trim().toLowerCase();
+      if (!q) {
+        feedback.textContent = '请输入搜索关键词';
+        feedback.classList.add('visible');
+        return;
+      }
+      var cards = document.querySelectorAll('.card, .list-item, .review-card, .news-item, .timeline-item, .category-chip, .tag-index a');
+      var found = 0;
+      cards.forEach(function(el) {
+        var text = el.textContent.toLowerCase();
+        if (text.indexOf(q) !== -1) {
+          el.style.display = '';
+          found++;
+        } else {
+          el.style.display = 'none';
+        }
+      });
+      if (found === 0) {
+        feedback.textContent = '未找到与“' + input.value.trim() + '”相关的内容，请尝试其他关键词。';
+      } else {
+        feedback.textContent = '找到 ' + found + ' 条与“' + input.value.trim() + '”相关的内容。';
+      }
+      feedback.classList.add('visible');
+    });
+
+    input.addEventListener('input', function() {
+      if (!input.value.trim()) {
+        feedback.classList.remove('visible');
+        var cards = document.querySelectorAll('.card, .list-item, .review-card, .news-item, .timeline-item, .category-chip, .tag-index a');
+        cards.forEach(function(el) { el.style.display = ''; });
+      }
+    });
+  })();
+</script>
+
+</body>
+          </html>
